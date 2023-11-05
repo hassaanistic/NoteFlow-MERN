@@ -1,0 +1,32 @@
+.col {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    column-gap: 10px;
+    row-gap: 10px;
+  }
+  
+  .col-item {
+    display: flex;
+    flex-direction: column;
+    border: 1px solid purple;
+    /* border-radius: 20px  ; */
+    background-color: white;
+    width: 350px;
+    padding: 1em;
+  }
+  
+  .col-item h3 {
+    font-size: 1.5em;
+    margin-bottom: 10px;
+  }
+  
+  .col-item-text {
+    flex-grow: 1; /* Allow text to grow and take available space */
+  }
+  
+
+  
+  .col-item-buttons {
+    margin-top: auto; /* Push buttons to the bottom */
+  }
+  
