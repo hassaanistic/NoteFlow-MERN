@@ -20,6 +20,8 @@ import {
   ModalBody,
   ModalCloseButton,
   Input,
+  useToast,
+  Box,
 } from "@chakra-ui/react";
 import { CheckCircleIcon, WarningIcon } from "@chakra-ui/icons";
 import { usersState } from "../States/users/UsersState";
@@ -34,6 +36,7 @@ export default function Profile() {
   const [confirmPassword, setConfirmPassword] = useState('');
   const [passwordResetError, setPasswordResetError] = useState('');
 
+  const toast = useToast();
 
   //first we were using this state in profile and dashboard jsx So when we upload the note with image it also upload in th eprofile.jsx so we make it different 
   // const [selectedImageForDisplay, setselectedImageForDisplay] = useState(null);
@@ -139,7 +142,7 @@ export default function Profile() {
       setPasswordResetError('Passwords do not match');
       return;
     }
-  
+
     try {
       // Send a PUT request to the API to update the password
       const response = await fetch('http://localhost:5000/api/users/updatePassword', {
@@ -152,13 +155,22 @@ export default function Profile() {
           password: newPassword,
         }),
       });
-  
+
       if (response.ok) {
         // Password reset successful
         setPasswordResetError('');
         setNewPassword('');
         setConfirmPassword('');
         closePasswordResetModal(); // Close the modal
+        toast({
+          title: 'Success',
+          description: 'Password Changed Successfully',
+          status: 'success',
+          duration: 3000,
+          isClosable: true,
+          position: "bottom-right",
+
+        });
       } else {
         const data = await response.json();
         setPasswordResetError(data.error);
@@ -171,68 +183,97 @@ export default function Profile() {
 
   return (
 
-    <div style={{ display: "flex", flexDirection: "row", justifyContent: "space-between" }}>
-      <Tabs mt={"40px"} p={"20px"} color={"purple.300"} variant={"enclosed"}>
+    <Box  height={"80vh"} >
+      <Tabs h={{ base: "auto", sm: "50vh", md: "50vh", lg: "30vh", }} mt={"40px"} color={"purple.300"} variant={"enclosed"}>
+
         <TabList>
           <Tab _selected={{ color: "white", bg: "purple.300", borderRadius: 0, marginLeft: "3rem" }}>Account Info</Tab>
           {/* <Tab _selected={{ color: "white", bg: "purple.300" }}>Task History</Tab> */}
         </TabList>
 
-        <TabPanels>
+
+        <TabPanels >
           {/* 1st */}
 
-          <TabPanel>
-            <List spacing={4}>
-              {user && (
-                <>
-                  <ListItem>
-                    <Flex>
-                      <Text>Username : </Text>
-                      <Text>{user.username}</Text>
-                    </Flex>
-                  </ListItem>
-                  <Flex>
-                    <Text>Email : </Text>
-                    <Text>{user.email}</Text>
-                  </Flex>
+          <TabPanel width={"80vw"}   >
+            <Flex width={"100%"}  flexDir={{ base: "column", sm: "row", md: "row", lg: "row" }} height={{ base: "70vh", sm: "90vh", md: "70vh", lg: "70vh" }} justifyContent={"space-between"} alignItems={{ base: "start", sm: "start", md: "center", lg: "center" }} >
 
-                  {/* Reset Password Button */}
-                  <Button colorScheme="blue" size="sm" onClick={openPasswordResetModal}>
-                    Reset Password
+
+              <Flex alignItems={"start"} justifyContent={"center"} flexDir={"column"}  width={"50%"} height={"100%"} >
+                <List height={"auto"} spacing={4}>
+                  {user && (
+                    <>
+                      <Flex alignItems={"start"} justifyContent={"start"} flexDir={"column"}>
+                        <ListItem>
+                          <Flex>
+                            <Text>Username : </Text>
+                            <Text>{user.username}</Text>
+                          </Flex>
+                        <Flex>
+                          <Text>Email : </Text>
+                          <Text>{user.email}</Text>
+                        </Flex>
+                        </ListItem>
+
+                        {/* Reset Password Button */}
+                        <Button colorScheme="blue" size="sm" onClick={openPasswordResetModal}>
+                          Reset Password
+                        </Button>
+
+                      </Flex>
+
+                    </>
+                  )}
+
+
+                </List>
+              </Flex>
+
+
+              <Flex flexDir={"column"} justifyContent={"start"} alignItems={"start"}  width={"50%"}  height={"100%"}  >
+                <Box minW={{ base: "200px", sm: "200px", md: "300px", lg: "300px", }} marginTop={"50px"} >
+                  {profileImageData && (
+                    <Box w={{ base: "100px", sm: "150px", md: "200px", lg: "200px", }} h={{ base: "100px", sm: "150px", md: "200px", lg: "200px", }}  >
+                      <img
+                        src={profileImageData}
+                        alt="Selected"
+                        style={{ width: "100%", height: "100%" }}
+                      />
+                    </Box>
+                  )}
+                </Box>
+
+                <Flex  w={{ base: "100%", sm: "100%", md: "300px", lg: "300px" }}   alignItems={{ base: "start", sm: "start", md: "start", lg: "start" }} justifyContent={'start '} flexDirection={{ base: "column", sm: "column", md: "row", lg: "row" }} >
+
+                  <Button
+                    border="none"
+                    m="10px"
+                    width="50%"
+                  // bgColor="purple.100"
+                  >
+                    <label htmlFor="noteImageInput" style={{ cursor: "pointer" }}>
+                      selectImage
+                    </label>
+                    <input
+                      type="file"
+                      accept="image/*"
+                      id="noteImageInput"
+                      style={{ display: "none" }}
+                      onChange={onChangeHandle}
+                    />
+
                   </Button>
 
-                  <div style={{ minWidth: "300px" /* Adjust the minimum width as needed */ }}>
-
-                    <Button
-                      border="none"
-                      m="10px"
-                      width="40%"
-                    // bgColor="purple.100"
-                    >
-                      <label htmlFor="noteImageInput" style={{ cursor: "pointer" }}>
-                        selectProfileImage
-                      </label>
-                      <input
-                        type="file"
-                        accept="image/*"
-                        id="noteImageInput"
-                        style={{ display: "none" }}
-                        onChange={onChangeHandle}
-                      />
-
-                    </Button>
-
-                    <Button
-                      bg={"purple.300"}
-                      onClick={handleImageUploadForProfile}
-                      style={{ margin: "20px" }}
-                    >
-                      Upload Image
-                    </Button>
-                  </div>
-                </>
-              )}
-            </List>
+                  <Button
+                    bg={"purple.300"}
+                    onClick={handleImageUploadForProfile}
+                    style={{ margin: "20px" }}
+                  >
+                    Upload
+                  </Button>
+                </Flex>
+              </Flex>
+            </Flex>
           </TabPanel>
 
           {/* 2nd */}
@@ -265,17 +306,6 @@ export default function Profile() {
         </TabPanels>
       </Tabs>
 
-      <div style={{ minWidth: "300px", marginTop: "50px" }}>
-        {profileImageData && (
-          <div style={{ width: "200px", height: "200px" }}>
-            <img
-              src={profileImageData}
-              alt="Selected"
-              style={{ width: "100%", height: "100%" }}
-            />
-          </div>
-        )}
-      </div>
 
 
 
@@ -315,6 +345,6 @@ export default function Profile() {
         </ModalContent>
       </Modal>
 
-    </div>
+    </Box >
   );
 }

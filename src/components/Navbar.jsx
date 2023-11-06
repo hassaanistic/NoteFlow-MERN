@@ -1,22 +1,41 @@
-import { UnlockIcon } from '@chakra-ui/icons';
-import { Box, Button, Center, Flex, HStack, VStack, Heading, Spacer, Text, useToast, Avatar, AvatarBadge, border, Image } from '@chakra-ui/react'
-// import { wrap } from 'framer-motion'
 import React, { useState, useEffect } from 'react'
+import {  
+   HStack,
+     
+        Image ,
+        Button,
+        Flex,
+        Text,
+        useToast,
+        IconButton,
+        Drawer,
+        DrawerOverlay,
+        DrawerContent,
+        DrawerHeader,
+        DrawerBody,
+        DrawerFooter,
+        VStack,
+        useMediaQuery,
+      } from '@chakra-ui/react'
 
 import { useNavigate } from "react-router-dom";
 
-
+import { HamburgerIcon } from '@chakra-ui/icons'; 
 
 function Navbar() {
   let navigate = useNavigate();
   const toast = useToast();
   const [user, setUser] = useState(null);
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   const handleLoginAndSignUp = () => {
     navigate("/register");
   }
 
-  
+  const toggleMenu = () => {
+    setIsMenuOpen(!isMenuOpen);
+  };
+
   useEffect(() => {
     //for some reason the fetchUserData() is not importing from the usersStates
     //so we make it here and we first check if the CurrentUser is present or not if present then show the Logout else loginAndSignup
@@ -49,8 +68,8 @@ function Navbar() {
   };
 
 
-  const handleLogout =  async() => {
-   await navigate("/");
+  const handleLogout = () => {
+    navigate("/");
 
     // Simulate a logout action and set the isLoggedIn state to false
     localStorage.removeItem('token');
@@ -70,51 +89,133 @@ function Navbar() {
     // navigate("/")  ;
   };
 
+
+
+  
+  const [isSmallScreen] = useMediaQuery("(max-width: 768px)");
+
   return (
-    <Flex height={"9vh"} mt={"20px"} borderRadius={50} boxShadow='xs' bg='white' width={"90%"} as={"nav"} paddingX={"30px "} paddingY={"10px"} alignItems={"center"} gap={"10px"}>
-      <Flex gap={2} alignItems={"Center"} >
-        <Image h={'50px'} width={"50px"} src="/logo/logo.png" />
-        <Text fontSize={"30px"} fontWeight={400} as={"h1"}>Note Flow</Text>
+    <Flex
+      height={{
+        sm: "11vh",
+        md: "9vh",
+        lg: "9vh",
+      }}
+      m="20px"
+      boxShadow="xs"
+      bg="white"
+      width="100%"
+      as="nav"
+      paddingX={{ base: "20px", md: "30px" }}
+      paddingY={{ base: "10px", md: "15px" }}
+      alignItems="center"
+      justifyContent="space-between"
+    >
+      <Flex gap={2} alignItems="center">
+        <Image h="50px" width="50px" src="/logo/logo.png" />
+        <Text fontSize="30px" fontWeight={400} as="h1">
+          Note Flow
+        </Text>
       </Flex>
-
-      <Spacer />
-
-      <HStack gap={"20px"}>
-        {user ? ( // If user data is available, show Log Out
-          <Button
-            borderRadius={50}
-            height={'35px'}
-            width={'100px'}
-            onClick={handleLogout}
-            colorScheme='purple'
-          >
-            Log Out
-          </Button>
-        ) : (
-          <>
+      {isSmallScreen ? (
+        user && (
+          <IconButton
+            aria-label="Log Out"
+            icon={<HamburgerIcon />}
+            onClick={toggleMenu}
+          />
+        )
+      ) : (
+        <HStack spacing="20px">
+          {user ? (
             <Button
-              borderRadius={50}
-              height={'35px'}
-              width={'100px'}
-              onClick={handleLoginAndSignUp}
-              colorScheme='purple'
+              height="35px"
+              width="100px"
+              onClick={handleLogout}
+              colorScheme="purple"
             >
-              Log In
+              Log Out
             </Button>
+          ) : (
+            <>
+              <Button
+                display={{ base: 'none', md: 'block' }}
+                height="35px"
+                width="100px"
+                onClick={handleLoginAndSignUp}
+                colorScheme="purple"
+              >
+                Log In
+              </Button>
+              <Button
+                display={{ base: 'none', md: 'block' }}
+                height="35px"
+                width="100px"
+                onClick={handleLoginAndSignUp}
+                colorScheme="purple"
+              >
+                Sign Up
+              </Button>
+            </>
+          )}
+        </HStack>
+      )}
+      <Drawer
+        placement="top"
+        isOpen={isMenuOpen}
+        onClose={toggleMenu}
+      >
+        <DrawerOverlay />
+        <DrawerContent>
+          <DrawerHeader>Menu</DrawerHeader>
+          <DrawerBody>
+            <VStack spacing="10px">
+              {user ? (
+                <Button
+                  height="35px"
+                  width="100px"
+                  onClick={handleLogout}
+                  colorScheme="purple"
+                >
+                  Log Out
+                </Button>
+              ) : (
+                <>
+                  <Button
+                    height="35px"
+                    width="100px"
+                    onClick={handleLoginAndSignUp}
+                    colorScheme="purple"
+                  >
+                    Log In
+                  </Button>
+                  <Button
+                    height="35px"
+                    width="100px"
+                    onClick={handleLoginAndSignUp}
+                    colorScheme="purple"
+                  >
+                    Sign Up
+                  </Button>
+                </>
+              )}
+            </VStack>
+          </DrawerBody>
+          <DrawerFooter>
             <Button
-              borderRadius={50}
-              height={'35px'}
-              width={'100px'}
-              onClick={handleLoginAndSignUp} // Change this to your sign-up logic
-              colorScheme='purple'
+              height="35px"
+              width="100px"
+              onClick={toggleMenu}
+              colorScheme="purple"
             >
-              Sign Up
+              Close
             </Button>
-          </>
-        )}
-      </HStack>
+          </DrawerFooter>
+        </DrawerContent>
+      </Drawer>
     </Flex>
   );
+            
 }
 
 export default Navbar

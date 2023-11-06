@@ -1,6 +1,6 @@
 
 import React, { useState } from 'react'
-import { Button, Input, Flex, useToast } from "@chakra-ui/react"
+import { Button, Input, Box, Flex, useToast } from "@chakra-ui/react"
 import { notesStates } from '../States/notes/NotesState';
 
 
@@ -112,76 +112,55 @@ function Create() {
     })
     navigate("/register")
   }
-
   return (
-    <div>
-      <Flex width={"100%"} justifyContent={"center"}>
-        <Flex flexDir={"column"}
-          // gap={"40px"}
-          // justifyContent={"center"}
-          width={"50vw"}
-          boxShadow={"md"}
-          bg={"white"}
+    <Box height={{base:"70vh" , sm:"70vh" , md:" 70vh" , lg:"70vh"}} style={{  background: 'lightgray', padding: '20px' }}>
+      <Flex width={'100%'}  justifyContent={'center'} alignItems={'center'}>
+        <Flex
+          flexDir={'column'}
+          width={['90%', '50%', '50%']} // Adjust the width for different screen sizes
+          boxShadow={'md'}
+          bg={'white'}
           borderRadius={10}
-        // height={"10vh"}
+          padding='20px'
         >
           <Input
-            border="none"
+            border='none'
             _focusVisible={false}
-            placeholder="Title"
-            size="md"
+            placeholder='Title'
+            size='md'
             value={title}
             onChange={(e) => setTitle(e.target.value)}
           />
           <Input
-            border="none"
+            border='none'
             _focusVisible={false}
-            placeholder="Write your thoughts . . ."
-            size="md"
+            placeholder='Write your thoughts . . .'
+            size='md'
             value={description}
             onChange={(e) => setDescription(e.target.value)}
           />
 
-          <Flex width={"100%"}>
-
-            <Button
-              border="none"
-              m="10px"
-              width="20%"
-              bgColor="purple.300"
-              onClick={handleAddNote}
-            >
+          <Flex width={'100%'} flexDirection={{base:"column" , sm:"column" , md:"row" , lg:"row"}} justifyContent={'space-between'} alignItems='center'>
+            <Button border='none' m='10px' width={['60%', '60%', '60%']} bgColor='purple.300' onClick={handleAddNote}>
               ADD
             </Button>
-
-            <Button
-              border="none"
-              m="10px"
-              width="20%"
-              // bgColor="purple.100"
-            >
-              <label htmlFor="noteImageInput" style={{ cursor: "pointer" }}>
-                uploadImage
+            <Button border='none' m='10px' width={['100%', '100%', '100%']}>
+              <label htmlFor='noteImageInput' style={{ cursor: 'pointer' }}>
+                Upload Image
               </label>
-
               <input
-                type="file"
-                accept="image/*"
-                id="noteImageInput"
-                style={{ display: "none" }}
+                type='file'
+                accept='image/*'
+                id='noteImageInput'
+                style={{ display: 'none' }}
                 onChange={onChangeHandleNoteImage}
               />
-
             </Button>
-
           </Flex>
         </Flex>
-
       </Flex>
-
-
-    </div>
-  )
+    </Box>
+  );
 }
 
 export default Create

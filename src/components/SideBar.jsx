@@ -3,7 +3,6 @@ import { NavLink } from 'react-router-dom'
 import React from 'react'
 import { AtSignIcon, CalendarIcon, EditIcon } from '@chakra-ui/icons'
 
-import NoteModal from '../pages/Create'
 
 //icons in chakra Ui are the "components" and we can pass the parameters and the can customize them 
 //icons listIcons and button icons components 

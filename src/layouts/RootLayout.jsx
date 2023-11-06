@@ -7,14 +7,14 @@ export default function RootLayout() {
   return (
 
     <>
-    <Flex justify={'Center'} bg={"gray.200"}>
+      <Flex justify={'Center'} bg={"gray.200"}>
 
-      <Navbar  />
-    </Flex>
+        <Navbar />
+      </Flex>
 
       {/* repeat(6 , 1fr) 6 columns in the grid in one row */}
 
-      <Grid templateColumns="repeat(6 , 1fr)" bg="gray.200" >
+      <Grid templateColumns={{xl:"repeat(6 , 1fr)", lg:"repeat(6 , 1fr)" ,md:"repeat(1 , 1fr)",sm:"repeat(1 , 1fr)",base:"repeat(1 , 1fr)"  }} bg="gray.200" >
         <GridItem
           variant={"enclosed"}
           as={"aside"}
@@ -22,10 +22,19 @@ export default function RootLayout() {
           mx={2}
           mt={7}
 
-          colSpan={{ base: 2, lg: 1.5, xl: 1 }}
+          colSpan={{  lg: 1, xl: 1 }}
+          fontSize={{ base: "15px", md:"15px",lg: "15px",  xl: "20px" }}
+
           bg={"purple.300"}
           height={{ lg: "auto" }}
-          p={{ base: "20px", lg: "30px" }}
+          paddingTop={{
+            base: "20px",
+            lg: "10px"
+          }}
+          paddingLeft={{
+            base: "20px",
+            lg: "10px"
+          }}
         >
 
           <SideBar />
@@ -38,8 +47,11 @@ export default function RootLayout() {
           bg={"gray.200"}
           minHeight={{ lg: "100vh" }}
           p={{ base: "20px", lg: "30px" }}
-        >
+          width={{ base: "100vw", md: "100vw", lg:"100%"  }}
+          justify={{ base: "center", md: "center", lg: "normal" }}
 
+
+        >
           <Outlet />
         </GridItem>
 

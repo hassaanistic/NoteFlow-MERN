@@ -126,10 +126,11 @@ export default function Dashboard() {
 
           <div className="col-item" key={note._id}>
             <Box
-              w={"300px"}
+              w={"100%"}
+
               h={note.noteImage ? "150px" : "auto"}
-              borderRadius={"4px"}
-              bg={'purple.200'}
+             
+
               onClick={() => handleImageClick(dashboardImageData[note._id])}
               style={{ cursor: 'pointer' }} // Add a pointer cursor for images
             >
@@ -148,6 +149,7 @@ export default function Dashboard() {
                     style={{
                       width: "100%", // Make the image take 100% of the container's width
                       height: "100%", // Make the image take 100% of the container's height
+                      overflow:"hidden",
                       objectFit: "cover", // Cover the container and maintain aspect ratio
                       objectPosition: "center", // Center the image both horizontally and vertically
                     }}
@@ -244,4 +246,5 @@ export default function Dashboard() {
       
     </div>
   );
+  
 }
