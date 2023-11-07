@@ -28,7 +28,7 @@ If you wanna start at once just open terminal in project folder and run
 | Reset Password    | Users can reset their password by receiving a link in their email                                |
 | Keep Notes        | Users can create a note with or without image inside it. Edit and delete the Notes                |
 
-# Front-End Structure 🛠
+# Folder Structure 🛠
     .
     ├── backend         # Have all the backend files
     ├── public          # Root folder that provides a context for React.js to render      
