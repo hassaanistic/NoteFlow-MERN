@@ -6,7 +6,8 @@ This project was bootstrapped with [Create React App](https://github.com/faceboo
 
 ### `npm install`
 
-###1 -Start the backend and frontend separately like this: \
+### `One Way`
+Start the backend and frontend separately like this: \
 Open project folder and open terminal then run these commands:
 ### `cd backend`
 ### `npm run start`
@@ -15,7 +16,8 @@ And open the new terminal and run this:
 ### `npm run dev`
 Now All set.
 
-###2 -If you wanna start at once just open terminal in project folder and run 
+### `Second Way`
+If you wanna start at once just open terminal in project folder and run 
 ### `npm run both`
 
 
