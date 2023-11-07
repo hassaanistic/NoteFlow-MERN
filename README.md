@@ -1,9 +1,12 @@
+https://github.com/hassaanistic/NoteFlow-MERN/assets/97599430/84203b80-1fd9-4110-baf6-b9cf01ca3df0
 # Getting Started with Create React App
-
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
 ## You need MongoDb,NodeJs,ExpressJs,React to run the project.
 First of all:
+
+
+
 ### `npm install`
 
 ### `1-Start the backend and frontend separately like`
