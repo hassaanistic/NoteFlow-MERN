@@ -183,7 +183,7 @@ export default function Profile() {
 
   return (
 
-    <Box  height={"80vh"} >
+    <Box height={"80vh"} >
       <Tabs h={{ base: "auto", sm: "50vh", md: "50vh", lg: "30vh", }} mt={"40px"} color={"purple.300"} variant={"enclosed"}>
 
         <TabList>
@@ -195,24 +195,24 @@ export default function Profile() {
         <TabPanels >
           {/* 1st */}
 
-          <TabPanel width={"80vw"}   >
-            <Flex width={"100%"}  flexDir={{ base: "column", sm: "row", md: "row", lg: "row" }} height={{ base: "70vh", sm: "90vh", md: "70vh", lg: "70vh" }} justifyContent={"space-between"} alignItems={{ base: "start", sm: "start", md: "center", lg: "center" }} >
+          <TabPanel width={{ base: "100%", sm: "100%", md: "100%", lg: "80vw" }}  >
+            <Flex width={"100%"} flexDir={{ base: "column", sm: "column", md: "column", lg: "row" }} height={{ base: "auto", sm: "auto", md: "auto", lg: "70vh" }} justifyContent={"space-between"} alignItems={{ base: "start", sm: "start", md: "center", lg: "center" }} >
 
 
-              <Flex alignItems={"start"} justifyContent={"center"} flexDir={"column"}  width={"50%"} height={"100%"} >
+              <Flex alignItems={"start"} justifyContent={"center"} flexDir={"column"} width={"100%"} height={"100%"} >
                 <List height={"auto"} spacing={4}>
                   {user && (
                     <>
                       <Flex alignItems={"start"} justifyContent={"start"} flexDir={"column"}>
                         <ListItem>
-                          <Flex>
+                          <Flex fontSize={{ base: "10px",sm:"15px", md: "20px", lg: "20px" }} >
                             <Text>Username : </Text>
                             <Text>{user.username}</Text>
                           </Flex>
-                        <Flex>
-                          <Text>Email : </Text>
-                          <Text>{user.email}</Text>
-                        </Flex>
+                          <Flex fontSize={{ base: "10px",sm:"15px", md: "20px", lg: "20px" }} >
+                            <Text>Email : </Text>
+                            <Text>{user.email}</Text>
+                          </Flex>
                         </ListItem>
 
                         {/* Reset Password Button */}
@@ -230,24 +230,25 @@ export default function Profile() {
               </Flex>
 
 
-              <Flex flexDir={"column"} justifyContent={"start"} alignItems={"start"}  width={"50%"}  height={"100%"}  >
-                <Box minW={{ base: "200px", sm: "200px", md: "300px", lg: "300px", }} marginTop={"50px"} >
+              <Flex flexDir={"column"} justifyContent={"start"} alignItems={"start"} width={"100%"} height={"100%"}  >
+
+                <Flex justifyContent={"start"} marginLeft={{ base: "30px", sm: "30px", md: "30px" }} minW={{ base: "100px", sm: "200px", md: "300px", lg: "300px", }} marginTop={"50px"} >
                   {profileImageData && (
-                    <Box w={{ base: "100px", sm: "150px", md: "200px", lg: "200px", }} h={{ base: "100px", sm: "150px", md: "200px", lg: "200px", }}  >
+                    <Flex w={{ base: "100px", sm: "150px", md: "200px", lg: "200px", }} h={{ base: "100px", sm: "150px", md: "200px", lg: "200px", }}  >
                       <img
                         src={profileImageData}
                         alt="Selected"
                         style={{ width: "100%", height: "100%" }}
                       />
-                    </Box>
+                    </Flex>
                   )}
-                </Box>
+                </Flex>
 
-                <Flex  w={{ base: "100%", sm: "100%", md: "300px", lg: "300px" }}   alignItems={{ base: "start", sm: "start", md: "start", lg: "start" }} justifyContent={'start '} flexDirection={{ base: "column", sm: "column", md: "row", lg: "row" }} >
+                <Flex marginLeft={{ base: "30px", sm: "30px", md: "30px" }} w={{ base: "100%", sm: "100%", md: "300px", lg: "300px" }} alignItems={{ base: "start", sm: "start", md: "start", lg: "start" }} justifyContent={'start '} flexDirection={{ base: "column", sm: "column", md: "row", lg: "row" }} >
 
                   <Button
                     border="none"
-                    m="10px"
+                    mt="10px"
                     width="50%"
                   // bgColor="purple.100"
                   >
@@ -267,11 +268,15 @@ export default function Profile() {
                   <Button
                     bg={"purple.300"}
                     onClick={handleImageUploadForProfile}
-                    style={{ margin: "20px" }}
+                    mt={"10px"}
+                    ml={{ lg: "10px", base: "0px", md: "0px" }}
+
                   >
                     Upload
                   </Button>
                 </Flex>
+
+
               </Flex>
             </Flex>
           </TabPanel>

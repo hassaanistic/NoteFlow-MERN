@@ -113,7 +113,7 @@ function Create() {
     navigate("/register")
   }
   return (
-    <Box height={{base:"70vh" , sm:"70vh" , md:" 70vh" , lg:"70vh"}} style={{  background: 'lightgray', padding: '20px' }}>
+    <Box height={{base:"70vh" , sm:"70vh" , md:" 70vh" , lg:"70vh"}} style={{ padding: '20px' }}>
       <Flex width={'100%'}  justifyContent={'center'} alignItems={'center'}>
         <Flex
           flexDir={'column'}

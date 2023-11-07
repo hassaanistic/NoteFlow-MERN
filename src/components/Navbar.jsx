@@ -15,7 +15,7 @@ import {
         DrawerBody,
         DrawerFooter,
         VStack,
-        useMediaQuery,
+          useMediaQuery,
       } from '@chakra-ui/react'
 
 import { useNavigate } from "react-router-dom";
@@ -93,21 +93,22 @@ function Navbar() {
 
   
   const [isSmallScreen] = useMediaQuery("(max-width: 768px)");
+  const [isMedScreen] = useMediaQuery("(max-width: 768px)");
 
   return (
     <Flex
       height={{
-        sm: "11vh",
-        md: "9vh",
-        lg: "9vh",
+        sm: '11vh',
+        md: '9vh',
+        lg: '9vh',
       }}
       m="20px"
       boxShadow="xs"
       bg="white"
       width="100%"
       as="nav"
-      paddingX={{ base: "20px", md: "30px" }}
-      paddingY={{ base: "10px", md: "15px" }}
+      paddingX={{ base: '20px', md: '30px' }}
+      paddingY={{ base: '10px', md: '15px' }}
       alignItems="center"
       justifyContent="space-between"
     >
@@ -117,14 +118,67 @@ function Navbar() {
           Note Flow
         </Text>
       </Flex>
-      {isSmallScreen ? (
-        user && (
-          <IconButton
-            aria-label="Log Out"
-            icon={<HamburgerIcon />}
-            onClick={toggleMenu}
-          />
-        )
+      {isSmallScreen && (
+        <IconButton
+          aria-label="Open Menu"
+          icon={<HamburgerIcon />}
+          onClick={toggleMenu}
+        />
+      )}
+      {isMedScreen ? (
+        <Drawer
+          placement="top"
+          isOpen={isMenuOpen}
+          onClose={toggleMenu}
+        >
+          <DrawerOverlay />
+          <DrawerContent>
+            <DrawerHeader>Menu</DrawerHeader>
+            <DrawerBody>
+              <VStack spacing="10px">
+                {user ? (
+                  <Button
+                    height="35px"
+                    width="100px"
+                    onClick={handleLogout}
+                    colorScheme="purple"
+                  >
+                    Log Out
+                  </Button>
+                ) : (
+                  <>
+                    <Button
+                      height="35px"
+                      width="100px"
+                      onClick={handleLoginAndSignUp}
+                      colorScheme="purple"
+                    >
+                      Log In
+                    </Button>
+                    <Button
+                      height="35px"
+                      width="100px"
+                      onClick={handleLoginAndSignUp}
+                      colorScheme="purple"
+                    >
+                      Sign Up
+                    </Button>
+                  </>
+                )}
+              </VStack>
+            </DrawerBody>
+            <DrawerFooter>
+              <Button
+                height="35px"
+                width="100px"
+                onClick={toggleMenu}
+                colorScheme="purple"
+              >
+                Close
+              </Button>
+            </DrawerFooter>
+          </DrawerContent>
+        </Drawer>
       ) : (
         <HStack spacing="20px">
           {user ? (
@@ -139,7 +193,6 @@ function Navbar() {
           ) : (
             <>
               <Button
-                display={{ base: 'none', md: 'block' }}
                 height="35px"
                 width="100px"
                 onClick={handleLoginAndSignUp}
@@ -148,7 +201,6 @@ function Navbar() {
                 Log In
               </Button>
               <Button
-                display={{ base: 'none', md: 'block' }}
                 height="35px"
                 width="100px"
                 onClick={handleLoginAndSignUp}
@@ -160,59 +212,6 @@ function Navbar() {
           )}
         </HStack>
       )}
-      <Drawer
-        placement="top"
-        isOpen={isMenuOpen}
-        onClose={toggleMenu}
-      >
-        <DrawerOverlay />
-        <DrawerContent>
-          <DrawerHeader>Menu</DrawerHeader>
-          <DrawerBody>
-            <VStack spacing="10px">
-              {user ? (
-                <Button
-                  height="35px"
-                  width="100px"
-                  onClick={handleLogout}
-                  colorScheme="purple"
-                >
-                  Log Out
-                </Button>
-              ) : (
-                <>
-                  <Button
-                    height="35px"
-                    width="100px"
-                    onClick={handleLoginAndSignUp}
-                    colorScheme="purple"
-                  >
-                    Log In
-                  </Button>
-                  <Button
-                    height="35px"
-                    width="100px"
-                    onClick={handleLoginAndSignUp}
-                    colorScheme="purple"
-                  >
-                    Sign Up
-                  </Button>
-                </>
-              )}
-            </VStack>
-          </DrawerBody>
-          <DrawerFooter>
-            <Button
-              height="35px"
-              width="100px"
-              onClick={toggleMenu}
-              colorScheme="purple"
-            >
-              Close
-            </Button>
-          </DrawerFooter>
-        </DrawerContent>
-      </Drawer>
     </Flex>
   );
             
