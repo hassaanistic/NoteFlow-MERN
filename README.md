@@ -3,10 +3,10 @@
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
 ## You need MongoDb,NodeJs,ExpressJs,React to run the project.
-First of all : \
+First of all:\
 ### `npm install`
 
-### `Start the backend and frontend separately like`
+### `1-Start the backend and frontend separately like`
 Open project folder and open terminal then run these commands:
 ### `cd backend`
 ### `npm run start`
@@ -14,7 +14,7 @@ And open the new terminal and run this:
 ### `npm run dev`
 Now All set.
 
-### `Start both at once`
+### `2-Start both at once`
 If you wanna start at once just open terminal in project folder and run 
 ### `npm run both`
 
