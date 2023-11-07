@@ -29,6 +29,7 @@ If you wanna start at once just open terminal in project folder and run
 | Profile Update    | Users can update their profile                                                                  |
 | Reset Password    | Users can reset their password by receiving a link in their email                                |
 | Keep Notes        | Users can create a note with or without image inside it. Edit and delete the Notes                |
+| Image Store        | All the images store in the Uploads Folder of the backend and their URLs store in the Databse                |
 
 # Folder Structure 🛠
     .
