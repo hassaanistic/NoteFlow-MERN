@@ -3,7 +3,7 @@
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
 ## You need MongoDb,NodeJs,ExpressJs,React to run the project.
-First of all:\
+First of all:
 ### `npm install`
 
 ### `1-Start the backend and frontend separately like`
