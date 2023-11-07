@@ -1,22 +1,27 @@
-import React ,{useEffect} from 'react'
+import React, { useState } from 'react'
 import Navbar from '../components/Navbar'
-import { Button, Box, Image, Flex, Text, Heading, VStack, Spacer, Center ,useToast } from "@chakra-ui/react"
-import {UnlockIcon } from "@chakra-ui/icons"
+import { Button, Box, Image, Flex, Text, Heading, VStack, Spacer, Center, useToast } from "@chakra-ui/react"
 
+import Spinner from '../components/Spinner';
 import { useNavigate } from "react-router-dom";
 
 
+
 function FrontPage() {
-    
-    
-  let navigate = useNavigate(); 
+
+  const [isLoading, setIsLoading] = useState(false);
+
+  let navigate = useNavigate();
   const toast = useToast();
 
-  const gotToRegisterPage = () =>{
-    navigate("/register") 
+
+  const gotToRegisterPage = () => {
+    setIsLoading(true); // Show loading spinner when navigating
+    navigate('/register');
   }
-   return (
+  return (
     <>
+      {isLoading && <Spinner />}
       <Flex height={{ base: "12vh", md: "18vh" }} justify="center" bg="gray.200">
         <Navbar />
       </Flex>
@@ -33,14 +38,14 @@ function FrontPage() {
               <Heading as="h1" fontSize={{ base: "40px", md: "70px" }}>
                 Write Your Ideas
               </Heading>
-              <Text textAlign={{ base: "start", sm:"center" , lg : "start"  }}>
+              <Text textAlign={{ base: "start", sm: "center", lg: "start" }}>
                 NoteFlow is the best place to jot down quick thoughts or to save longer notes filled with images or web links.
               </Text>
 
-                <Flex w="100%" justifyContent={{ base: "center", sm:"center" , lg : "start"  }}>
-              <Button  borderRadius={50} height="35px" width="100px" onClick={gotToRegisterPage} colorScheme="purple">
-                Join Us
-              </Button>
+              <Flex w="100%" justifyContent={{ base: "center", sm: "center", lg: "start" }}>
+                <Button borderRadius={50} height="35px" width="100px" onClick={gotToRegisterPage} colorScheme="purple">
+                  Join Us
+                </Button>
               </Flex>
 
             </VStack>
@@ -49,10 +54,10 @@ function FrontPage() {
           <Flex
             width={{ base: "100%", md: "50%" }}
             height={{ base: "44vh", md: "88vh" }}
-            alignItems={{ base: "center",  }}
-            justifyContent={{sm: "center" ,base: "center"}}
+            alignItems={{ base: "center", }}
+            justifyContent={{ sm: "center", base: "center" }}
           >
-            <Image bg="gray.500" borderRadius={30} padding="4%" src="/logo/illustrate.svg" height={{ base: "30vh",sm:"40vh", md: "60vh" }} />
+            <Image bg="gray.500" borderRadius={30} padding="4%" src="/logo/illustrate.svg" height={{ base: "30vh", sm: "40vh", md: "60vh" }} />
           </Flex>
         </Flex>
       </Box>

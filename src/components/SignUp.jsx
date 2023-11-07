@@ -12,7 +12,7 @@ const SignUp = () => {
 
   const { signUp } = usersState(); // Get the signUp function from the context
   const [credentials, setcredentials] = useState({ username: "", email: "", password: "", cpassword: "" });
-  const [profileImage , setProfileImage] = useState("65474833830fce625fec5a69");
+  const [profileImage , setProfileImage] = useState("654a0606ae776f56494a5be2");
   let navigate = useNavigate();
 
   const handleSubmit = async (e) => {

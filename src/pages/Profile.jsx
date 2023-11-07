@@ -25,6 +25,7 @@ import {
 } from "@chakra-ui/react";
 import { CheckCircleIcon, WarningIcon } from "@chakra-ui/icons";
 import { usersState } from "../States/users/UsersState";
+import Spinner from '../components/Spinner';
 
 export default function Profile() {
   const { user, fetchUserData, UpdateUserWithProfile } = usersState();
@@ -38,10 +39,13 @@ export default function Profile() {
 
   const toast = useToast();
 
+  const [isLoadingProfile , setIsLoadingProfile] = useState(true);
   //first we were using this state in profile and dashboard jsx So when we upload the note with image it also upload in th eprofile.jsx so we make it different 
   // const [selectedImageForDisplay, setselectedImageForDisplay] = useState(null);
 
   useEffect(() => {
+
+
     const fetchData = async () => {
       await fetchUserData();
       try {
@@ -50,15 +54,23 @@ export default function Profile() {
           let paramOfProfile = `http://localhost:5000/api/images/${profileImageId}`;
           await fetchAndDisplayImage(paramOfProfile);
         }
+        
       } catch (error) {
         console.error("Error fetching user data:", error);
       }
+    
     };
 
     fetchData();
+
+    //for spinner / Loader // this work because no Dependency Array in it 
+    setTimeout(() => {
+      setIsLoadingProfile(false); 
+    }, 400); // Adjust the delay time as needed
+
   }, []); // No need to listen for changes in userWithImage
 
-
+ 
 
   const onChangeHandle = (e) => {
     setProfileFileInput(e.target.files[0]);
@@ -183,106 +195,113 @@ export default function Profile() {
 
   return (
 
-    <Box height={"80vh"} >
-      <Tabs h={{ base: "auto", sm: "50vh", md: "50vh", lg: "30vh", }} mt={"40px"} color={"purple.300"} variant={"enclosed"}>
+    <>
+      { isLoadingProfile ? (
+            <Flex  w={"70vw"} h={"50vh"} justifyContent={"center"} alignItems={"center"} >
+            <Spinner />
+          </Flex>
+       ) : 
+      
+      ( <Box height={"80vh"} >
+        <Tabs h={{ base: "auto", sm: "50vh", md: "50vh", lg: "30vh", }} mt={"40px"} color={"purple.300"} variant={"enclosed"}>
 
-        <TabList>
-          <Tab _selected={{ color: "white", bg: "purple.300", borderRadius: 0, marginLeft: "3rem" }}>Account Info</Tab>
-          {/* <Tab _selected={{ color: "white", bg: "purple.300" }}>Task History</Tab> */}
-        </TabList>
+          <TabList>
+            <Tab _selected={{ color: "white", bg: "purple.300", borderRadius: 0, marginLeft: "3rem" }}>Account Info</Tab>
+            {/* <Tab _selected={{ color: "white", bg: "purple.300" }}>Task History</Tab> */}
+          </TabList>
 
 
-        <TabPanels >
-          {/* 1st */}
+          <TabPanels >
+            {/* 1st */}
 
-          <TabPanel width={{ base: "100%", sm: "100%", md: "100%", lg: "80vw" }}  >
-            <Flex width={"100%"} flexDir={{ base: "column", sm: "column", md: "column", lg: "row" }} height={{ base: "auto", sm: "auto", md: "auto", lg: "70vh" }} justifyContent={"space-between"} alignItems={{ base: "start", sm: "start", md: "center", lg: "center" }} >
+            <TabPanel width={{ base: "100%", sm: "100%", md: "100%", lg: "80vw" }}  >
+              <Flex width={"100%"} flexDir={{ base: "column", sm: "column", md: "column", lg: "row" }} height={{ base: "auto", sm: "auto", md: "auto", lg: "70vh" }} justifyContent={"space-between"} alignItems={{ base: "start", sm: "start", md: "center", lg: "center" }} >
 
 
-              <Flex alignItems={"start"} justifyContent={"center"} flexDir={"column"} width={"100%"} height={"100%"} >
-                <List height={"auto"} spacing={4}>
-                  {user && (
-                    <>
-                      <Flex alignItems={"start"} justifyContent={"start"} flexDir={"column"}>
-                        <ListItem>
-                          <Flex fontSize={{ base: "10px",sm:"15px", md: "20px", lg: "20px" }} >
-                            <Text>Username : </Text>
-                            <Text>{user.username}</Text>
-                          </Flex>
-                          <Flex fontSize={{ base: "10px",sm:"15px", md: "20px", lg: "20px" }} >
-                            <Text>Email : </Text>
-                            <Text>{user.email}</Text>
-                          </Flex>
-                        </ListItem>
+                <Flex alignItems={"start"} justifyContent={"center"} flexDir={"column"} width={"100%"} height={"100%"} >
+                  <List height={"auto"} spacing={4}>
+                    {user && (
+                      <>
+                        <Flex alignItems={"start"} justifyContent={"start"} flexDir={"column"}>
+                          <ListItem>
+                            <Flex fontSize={{ base: "10px", sm: "15px", md: "20px", lg: "20px" }} >
+                              <Text>Username : </Text>
+                              <Text>{user.username}</Text>
+                            </Flex>
+                            <Flex fontSize={{ base: "10px", sm: "15px", md: "20px", lg: "20px" }} >
+                              <Text>Email : </Text>
+                              <Text>{user.email}</Text>
+                            </Flex>
+                          </ListItem>
 
-                        {/* Reset Password Button */}
-                        <Button colorScheme="blue" size="sm" onClick={openPasswordResetModal}>
-                          Reset Password
-                        </Button>
+                          {/* Reset Password Button */}
+                          <Button colorScheme="blue" size="sm" onClick={openPasswordResetModal}>
+                            Reset Password
+                          </Button>
 
+                        </Flex>
+
+                      </>
+                    )}
+
+
+                  </List>
+                </Flex>
+
+
+                <Flex flexDir={"column"} justifyContent={"start"} alignItems={"start"} width={"100%"} height={"100%"}  >
+
+                  <Flex justifyContent={"start"} marginLeft={{ base: "30px", sm: "30px", md: "30px" }} minW={{ base: "100px", sm: "200px", md: "300px", lg: "300px", }} marginTop={"50px"} >
+                    {profileImageData && (
+                      <Flex w={{ base: "100px", sm: "150px", md: "200px", lg: "200px", }} h={{ base: "100px", sm: "150px", md: "200px", lg: "200px", }}  >
+                        <img
+                          src={profileImageData}
+                          alt="Selected"
+                          style={{ width: "100%", height: "100%" }}
+                        />
                       </Flex>
+                    )}
+                  </Flex>
 
-                    </>
-                  )}
+                  <Flex marginLeft={{ base: "30px", sm: "30px", md: "30px" }} w={{ base: "100%", sm: "100%", md: "300px", lg: "300px" }} alignItems={{ base: "start", sm: "start", md: "start", lg: "start" }} justifyContent={'start '} flexDirection={{ base: "column", sm: "column", md: "row", lg: "row" }} >
 
-
-                </List>
-              </Flex>
-
-
-              <Flex flexDir={"column"} justifyContent={"start"} alignItems={"start"} width={"100%"} height={"100%"}  >
-
-                <Flex justifyContent={"start"} marginLeft={{ base: "30px", sm: "30px", md: "30px" }} minW={{ base: "100px", sm: "200px", md: "300px", lg: "300px", }} marginTop={"50px"} >
-                  {profileImageData && (
-                    <Flex w={{ base: "100px", sm: "150px", md: "200px", lg: "200px", }} h={{ base: "100px", sm: "150px", md: "200px", lg: "200px", }}  >
-                      <img
-                        src={profileImageData}
-                        alt="Selected"
-                        style={{ width: "100%", height: "100%" }}
+                    <Button
+                      border="none"
+                      mt="10px"
+                      width="50%"
+                    // bgColor="purple.100"
+                    >
+                      <label htmlFor="noteImageInput" style={{ cursor: "pointer" }}>
+                        selectImage
+                      </label>
+                      <input
+                        type="file"
+                        accept="image/*"
+                        id="noteImageInput"
+                        style={{ display: "none" }}
+                        onChange={onChangeHandle}
                       />
-                    </Flex>
-                  )}
+
+                    </Button>
+
+                    <Button
+                      bg={"purple.300"}
+                      onClick={handleImageUploadForProfile}
+                      mt={"10px"}
+                      ml={{ lg: "10px", base: "0px", md: "0px" }}
+
+                    >
+                      Upload
+                    </Button>
+                  </Flex>
+
+
                 </Flex>
-
-                <Flex marginLeft={{ base: "30px", sm: "30px", md: "30px" }} w={{ base: "100%", sm: "100%", md: "300px", lg: "300px" }} alignItems={{ base: "start", sm: "start", md: "start", lg: "start" }} justifyContent={'start '} flexDirection={{ base: "column", sm: "column", md: "row", lg: "row" }} >
-
-                  <Button
-                    border="none"
-                    mt="10px"
-                    width="50%"
-                  // bgColor="purple.100"
-                  >
-                    <label htmlFor="noteImageInput" style={{ cursor: "pointer" }}>
-                      selectImage
-                    </label>
-                    <input
-                      type="file"
-                      accept="image/*"
-                      id="noteImageInput"
-                      style={{ display: "none" }}
-                      onChange={onChangeHandle}
-                    />
-
-                  </Button>
-
-                  <Button
-                    bg={"purple.300"}
-                    onClick={handleImageUploadForProfile}
-                    mt={"10px"}
-                    ml={{ lg: "10px", base: "0px", md: "0px" }}
-
-                  >
-                    Upload
-                  </Button>
-                </Flex>
-
-
               </Flex>
-            </Flex>
-          </TabPanel>
+            </TabPanel>
 
-          {/* 2nd */}
-          {/* <TabPanel>
+            {/* 2nd */}
+            {/* <TabPanel>
             <List spacing={4}>
               <ListItem>
                 <ListIcon as={CheckCircleIcon} color={"teal.400"} />
@@ -308,48 +327,51 @@ export default function Profile() {
           </TabPanel> */}
 
 
-        </TabPanels>
-      </Tabs>
+          </TabPanels>
+        </Tabs>
 
 
 
 
-      {/* Password Reset Modal */}
-      <Modal isOpen={isPasswordResetModalOpen} onClose={closePasswordResetModal}>
-        <ModalOverlay />
-        <ModalContent>
-          <ModalHeader>Reset Password</ModalHeader>
-          <ModalCloseButton />
-          <ModalBody>
+        {/* Password Reset Modal */}
+        <Modal isOpen={isPasswordResetModalOpen} onClose={closePasswordResetModal}>
+          <ModalOverlay />
+          <ModalContent>
+            <ModalHeader>Reset Password</ModalHeader>
+            <ModalCloseButton />
+            <ModalBody>
 
-            <Input
-              type="password"
-              placeholder="New Password"
-              value={newPassword}
-              onChange={(e) => setNewPassword(e.target.value)}
-            />
-            <Input
-              type="password"
-              placeholder="Confirm Password"
-              value={confirmPassword}
-              onChange={(e) => setConfirmPassword(e.target.value)}
-            />
-            {passwordResetError && (
-              <Text color="red">{passwordResetError}</Text>
-            )}
+              <Input
+                type="password"
+                placeholder="New Password"
+                value={newPassword}
+                onChange={(e) => setNewPassword(e.target.value)}
+              />
+              <Input
+                type="password"
+                placeholder="Confirm Password"
+                value={confirmPassword}
+                onChange={(e) => setConfirmPassword(e.target.value)}
+              />
+              {passwordResetError && (
+                <Text color="red">{passwordResetError}</Text>
+              )}
 
-          </ModalBody>
-          <ModalFooter>
-            <Button colorScheme="blue" onClick={handlePasswordReset}>
-              Reset
-            </Button>
-            <Button variant="ghost" onClick={closePasswordResetModal}>
-              Cancel
-            </Button>
-          </ModalFooter>
-        </ModalContent>
-      </Modal>
+            </ModalBody>
+            <ModalFooter>
+              <Button colorScheme="blue" onClick={handlePasswordReset}>
+                Reset
+              </Button>
+              <Button variant="ghost" onClick={closePasswordResetModal}>
+                Cancel
+              </Button>
+            </ModalFooter>
+          </ModalContent>
+        </Modal>
 
-    </Box >
+      </Box >
+      )
+}
+    </>
   );
 }

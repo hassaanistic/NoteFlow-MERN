@@ -21,6 +21,8 @@ import { notesStates } from '../States/notes/NotesState';
 
 import '../styles/Dashboard.css';
 
+import Spinner from '../components/Spinner';
+
 export default function Dashboard() {
   const { notes, fetchNotes, deleteNote, editNote } = notesStates();
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
@@ -31,6 +33,10 @@ export default function Dashboard() {
 
   const [isImageModalOpen, setIsImageModalOpen] = useState(false);
   const [selectedImage, setSelectedImage] = useState(null);
+
+
+  const [isLoading, setIsLoading] = useState(true); // Add loading state
+
 
 
   // const [selectedImageForDisplay, setselectedImageForDisplay] = useState({});
@@ -60,23 +66,50 @@ export default function Dashboard() {
       });
   };
 
+  // useEffect(() => {
+  //   const token = localStorage.getItem('token');
+  //   if (token) {
+  //     fetchNotes().then(() => {
+  //       // After fetching the notes, fetch and display images for each note
+  //       notes.forEach((note) => {
+  //         if (note.noteImage) {
+  //           const imageUrlOfNote = `http://localhost:5000/api/images/${note.noteImage}`;
+  //           fetchAndDisplayImageOfNote(imageUrlOfNote, note._id);
+  //         }
+  //         setIsLoading(false);
+  //       });
+  //     });
+  //   }
+  // }, [fetchNotes, notes]);
+
   useEffect(() => {
     const token = localStorage.getItem('token');
     if (token) {
       fetchNotes().then(() => {
         // After fetching the notes, fetch and display images for each note
-        notes.forEach((note) => {
+        const imagePromises = notes.map((note) => {
           if (note.noteImage) {
             const imageUrlOfNote = `http://localhost:5000/api/images/${note.noteImage}`;
-            fetchAndDisplayImageOfNote(imageUrlOfNote, note._id);
+            return fetchAndDisplayImageOfNote(imageUrlOfNote, note._id);
           }
+          return Promise.resolve(); // Return a resolved promise for notes without images
+        });
+
+        Promise.all(imagePromises).then(() => {
+            setIsLoading(false); // Set loading state to false
+
+          // setTimeout(() => {
+          //   setIsLoading(false); // Set loading state to false
+          // }, 300);          
         });
       });
     }
   }, [fetchNotes, notes]);
 
 
-  ///Editing and Open the modal
+
+
+  //Editing and Open the modal
   const handleEditClick = (note) => {
     setSelectedNote(note);
     setEditedTitle(note.title);
@@ -121,7 +154,14 @@ export default function Dashboard() {
 
   return (
     <div className="col">
-      {notes &&
+
+      {isLoading ? (
+         <Flex  w={"70vw"} h={"50vh"} justifyContent={"center"} alignItems={"center"} >
+         <Spinner />
+       </Flex>
+
+      ) : (
+        notes &&
         notes.map((note, index) => (
 
           <div className="col-item" key={note._id}>
@@ -129,7 +169,7 @@ export default function Dashboard() {
               w={"100%"}
 
               h={note.noteImage ? "150px" : "auto"}
-             
+
 
               onClick={() => handleImageClick(dashboardImageData[note._id])}
               style={{ cursor: 'pointer' }} // Add a pointer cursor for images
@@ -149,7 +189,7 @@ export default function Dashboard() {
                     style={{
                       width: "100%", // Make the image take 100% of the container's width
                       height: "100%", // Make the image take 100% of the container's height
-                      overflow:"hidden",
+                      overflow: "hidden",
                       objectFit: "cover", // Cover the container and maintain aspect ratio
                       objectPosition: "center", // Center the image both horizontally and vertically
                     }}
@@ -188,7 +228,9 @@ export default function Dashboard() {
               </Flex>
             </div>
           </div>
-        ))}
+        ))
+
+      )}
 
 
       {/* Edit Modal */}
@@ -231,7 +273,7 @@ export default function Dashboard() {
         <ModalContent
           style={{
             position: 'absolute',
-            
+
             transform: 'translate(-50%, -50%)',
           }}
         >
@@ -243,8 +285,8 @@ export default function Dashboard() {
         </ModalContent>
       </Modal>
 
-      
+
     </div>
   );
-  
+
 }
