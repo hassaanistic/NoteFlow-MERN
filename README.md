@@ -52,3 +52,4 @@ If you wanna start at once just open terminal in project folder and run
     |   ├── main.jsx    # Root component
     |   ├── index.jsx   # Entry point 
     └──   
+#Made by @hassaanistic with ♥ 
